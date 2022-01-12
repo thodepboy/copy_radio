@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radio</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJCH2J19N3"></script>
+    <meta property="og:title" content="Ông Dev Radio" />
+    <meta property="og:description" content="Nơi mọi người cùng chia sẻ gu âm nhạc." />
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <link rel="icon" type="image/png" href="images/logo_small.jpg" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preload" href="images/logo.png" as="image" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+		<a class="navbar-brand" href="/">
+		</a>
+		<button class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="width: 3.1333rem; height: 3.1333rem; border-radius: 50%;">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+	  
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		  <ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<button type="button" class="btn btn-dark util-btn songs-or-artists" data-toggle="modal" data-target="#searchModal">
+						<i class="fas fa-search"></i>
+						Songs or artists
+					</button>
+				</li>
+				<li class="nav-item">
+					<button type="button" class="btn btn-dark util-btn" data-toggle="modal" data-target="#videoModal">
+						<i class="fas fa-headphones"></i>
+						Tracklists Chart
+					</button>
+				</li>
+		  </ul>
+			<span id="nav__auth">
+				<button onclick="toggleTheme()" type="button" class="btn btn-dark" style="width: 2.1333rem; height: 2.1333rem; border-radius: 50%; padding: 0; margin-top: 1rem; margin-right: 5px;">
+					<i class="fas fa-cloud" style="font-weight: 700; font-size: 14px; margin: 0;"></i>
+				</button>
+				<a class="nav__utility-btn auth" id="btn-login" onclick="window.location='/login'">
+					Login
+				</a>
+				<a class="user-profile" style="text-align: end; margin-top: 1rem;">
+					<img id="avatar" src="">
+					<span class="welcome-text">Hi, <span><strong><span id="full-name"></span></strong>
+					<br>
+					<button id="logout-btn" onclick="window.location='/logout'">
+						Logout
+					</button>
+				</a>
+			</span>
+		</div>
+	</nav>
+	
+	<main>
+			<div id="videos-container" class="row">
+				<div class="col-md-8 current-video">
+					<div id="main-video">
+						<div id="video">
+					<p class="videos-container__header" style="margin-left: 0.6667em; width: 100%">Currently playing</span>
+							<div id="video-react" style="width: 100%;">
+								<button id="muted" onclick="changeMute()">
+									<i class="fas fa-volume-mute"></i>
+								</button>
+								<input id="volume-control" type="range" min="0" max="100" value="0" onchange="changeVolume(this.value)">
+							</div>
+							<div id="videoPlaying"></div>
+							<div id="video-content">
+								<div id="titlePlayingVideo"></div>
+							</div>
+							<div class="video-voting">
+								<div id="playing-video-voting" class=" playing-vote"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 videos-container__tracks" id="queueTracks">
+						<p class="videos-container__header">Tracks</span>
+				</div>
+			</div>
+	</main>
+	<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="od-rule" style="text-align: left;">
+					<h4 class="od-text-info">Ông Dev</h4>
+					<p class="user-guide">
+						Chào các cháu Ông Dev đến với ODRadio ! Nơi khởi nguồn cảm hứng, đam mê :v.
+					</p>
+					<p class="user-guide">Dưới đây là một vài giáo điều trên ODRadio :</p>
+					<ul class="user-guide">
+						<li>
+								Các nội dung được phát trên ODRadio: MV âm nhạc, podcast....
+						</li>
+						<li>Vui lòng chọn các video có thời lượng ngắn hơn 10 phút</li>
+					</ul>
+					<p class="user-guide">
+						<em>Mọi đóng góp vui lòng liên hệ @OngDev</em>
+					</p>
+				</div>
+				<div id="search-container">
+					<input type="text" id="search-input" value="" placeholder="Search for any songs or artists" class="form-control" />
+					<div id="search-result"></div>
+					<div id="loader"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+					<div id="tracks-modal">
+						<div>
+							<p class="videos-container__header">Senior Tracks</p>
+							<div class="videos-container__tracks" style="height: unset;" id="senior-tracks">
+								Empty
+							</div>
+						</div>
+						<div>
+							<p class="videos-container__header">Junior Tracks</p>
+							<div class="videos-container__tracks" style="height: unset;" id="junior-tracks">
+								Empty
+							</div>
+						</div>
+						<div>
+							<p class="videos-container__header">Other Tracks</p>
+							<div class="videos-container__tracks" style="height: unset;" id="other-tracks">
+								Empty
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="video.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>
